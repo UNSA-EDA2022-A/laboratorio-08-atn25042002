@@ -29,6 +29,8 @@ public class Exercise1 {
 
     // Retorna NULL quando no se encontro el dni, y el nombre de la persona si lo encontro
     public String encontrarPersona(String dni){
+        if(tb.findPersona(dni)== null)
+            return null;
         return tb.findPersona(dni).nombre;
     }    
 }
