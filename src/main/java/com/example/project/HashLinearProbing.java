@@ -34,13 +34,15 @@ public class HashLinearProbing {
             System.out.println("La persona no esta regitrada");
         }
         else{
-            for(int i= 0; i< size; i++){
-                if(personas[i].DNI.equals(dni)){
-                    personas[i]= null;
-                }
+            for(int i= 0; i< size; i++){                
                 if(personas[i]== null && i< hsize -1){
                     personas[i]= personas[i+1];
                     personas[i+1]= null;
+                    continue;
+                }
+                if(personas[i].DNI.equals(dni)){
+                    personas[i]= null;
+                    i--;
                 }
             }
             size--;
