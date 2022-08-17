@@ -16,7 +16,7 @@ public class HashLinearProbing {
             System.out.println("Tabla hash esta llena!");
             return;
         }
-        if (findPersona(p.DNI)!=null){
+        if (findPersona(p.DNI)==null){
             personas[size]= p;
             size++;
         }
