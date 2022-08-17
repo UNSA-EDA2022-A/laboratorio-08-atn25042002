@@ -43,6 +43,7 @@ public class HashLinearProbing {
                     personas[i+1]= null;
                 }
             }
+            size--;
         }
     }
 
@@ -57,9 +58,9 @@ public class HashLinearProbing {
     }
 
     public Persona findPersona(String dni){
-        for(Persona p: personas){
-            if(p.DNI.equals(dni)){
-                return p;
+        for(int i= 0; i<size; i ++){
+            if(personas[i].DNI.equals(dni)){
+                return personas[i];
             }
         }
         return null;
