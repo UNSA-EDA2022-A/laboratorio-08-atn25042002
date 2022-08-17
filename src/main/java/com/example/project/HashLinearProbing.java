@@ -22,7 +22,6 @@ public class HashLinearProbing {
         }
         else{
             System.out.println("La persona ya fue registrada");
-            return;
         }
     }
 
@@ -59,8 +58,9 @@ public class HashLinearProbing {
 
     public Persona findPersona(String dni){
         for(Persona p: personas){
-            if(p.DNI.equals(dni))
+            if(p.DNI.equals(dni)){
                 return p;
+            }
         }
         return null;
     }
