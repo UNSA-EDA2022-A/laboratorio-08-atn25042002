@@ -1,7 +1,5 @@
 package com.example.project;
 
-import java.util.Random;
-
 public class HashLinearProbing {
     private int hsize; // tamano de la tabla hash
     private Persona[] personas; // array que representa la tabla hash
