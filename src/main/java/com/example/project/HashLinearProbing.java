@@ -1,139 +1,83 @@
 package com.example.project;
 
-import java.util.Random;
-
 public class HashLinearProbing {
     private int hsize; // tamano de la tabla hash
-    private Integer[] buckets; // array que representa la tabla hash
-    private Integer AVAILABLE;
+    private Persona[] personas; // array que representa la tabla hash
     private int size; // cantidad de elementos en la tabla hash
 
     public HashLinearProbing(int hsize) {
-        this.buckets = new Integer[hsize];
+        this.personas = new Persona[hsize];
         this.hsize = hsize;
-        this.AVAILABLE = Integer.MIN_VALUE;
         this.size = 0;
     }
 
-    public int hashing(int key) {
-        int hash = key % hsize;
-        if (hash < 0) {
-            hash += hsize;
-        }
-        return hash;
-    }
-
-    public void insertHash(int key) {
-        Integer wrappedInt = key;
-        int hash = hashing(key);
-
-        if (isFull()) {
+    public void insertHash(Persona p) {
+        if (isFull()) { //Si esta lleno el hash
             System.out.println("Tabla hash esta llena!");
             return;
         }
-
-        for (int i = 0; i < hsize; i++) {
-            if (buckets[hash] == null || buckets[hash] == AVAILABLE) {
-                buckets[hash] = wrappedInt;
-                size++;
-                return;
-            }
-
-            if (hash + 1 < hsize) {
-                hash++;
-            } else {
-                hash = 0;
-            }
+        if (findPersona(p.DNI)==null){ //Si no encuentra a la persona
+            personas[size]= p;          //La agrega
+            size++;                     //Aumenta el tamaño (nro de elementos validos)
+        }
+        else{ //En caso el dni ya este registrado
+            System.out.println("La persona ya fue registrada");
         }
     }
 
-    public void deleteHash(int key) {
-        Integer wrappedInt = key;
-        int hash = hashing(key);
-
-        if (isEmpty()) {
+    public void deleteHash(String dni) {
+        if (isEmpty()) { //Si esta vacio el hash
             System.out.println("Tabla hash esta vacia!");
             return;
+        }        
+        if (findPersona(dni)==null){ //Si el dni no fue registrado
+            System.out.println("La persona no esta regitrada");
         }
-
-        for (int i = 0; i < hsize; i++) {
-            if (buckets[hash] != null && buckets[hash].equals(wrappedInt)) {
-                buckets[hash] = AVAILABLE;
-                size--;
-                return;
+        else{
+            for(int i= 0; i< size; i++){                
+                if(personas[i]== null && i< hsize -1){ //Esto sirve para acomodar el hash
+                    personas[i]= personas[i+1];         //luego de remover a alguna persona
+                    personas[i+1]= null;
+                    continue;
+                }
+                if(personas[i].DNI.equals(dni)){        //Esto remueve a la persona
+                    personas[i]= null;
+                    i--;                                //Vuelve a recorrer la iteracion
+                }                                       //para acomodar correctamente
             }
-
-            if (hash + 1 < hsize) {
-                hash++;
-            } else {
-                hash = 0;
-            }
+            size--;
         }
-        System.out.println("Clave " + key + " no encontrada");
     }
 
     public void displayHashtable() {
         for (int i = 0; i < hsize; i++) {
-            if (buckets[i] == null || buckets[i] == AVAILABLE) {
-                System.out.println("Celda " + i + ": Vacia");
+            if (personas[i] == null) {
+                System.out.println("Registro " + i + ": Vacia");
             } else {
-                System.out.println("Celda " + i + ": " + buckets[i].toString());
+                System.out.println("DNI: " + personas[i].DNI + " - " + personas[i].nombre);
             }
         }
     }
 
-    public int findHash(int key) {
-        Integer wrappedInt = key;
-        int hash = hashing(key);
-
-        if (isEmpty()) {
-            System.out.println("Tabla hash esta vacia!");
-            return -1;
-        }
-
-        for (int i = 0; i < hsize; i++) {
-            try {
-                if (buckets[hash].equals(wrappedInt)) {
-                    buckets[hash] = AVAILABLE;
-                    return hash;
-                }
-            } catch (Exception E) {
-            }
-
-            if (hash + 1 < hsize) {
-                hash++;
-            } else {
-                hash = 0;
+    public Persona findPersona(String dni){
+        for(int i= 0; i<size; i ++){
+            if(personas[i].DNI.equals(dni)){
+                return personas[i];
             }
         }
-        System.out.println("Clave " + key + " no encontrada!");
-        return -1;
-    }    
+        return null;
+    }
    
     public boolean isFull() {        
         return size == hsize;
     }
 
     public boolean isEmpty() {
-        boolean response = true;
         for (int i = 0; i < hsize; i++) {
-            if (buckets[i] != null) {
-                response = false;
-                break;
+            if (personas[i] != null) {
+                return false;
             }
         }
-        return response;
-    }
-
-    public static void main (String[] args){
-        HashLinearProbing tb = new HashLinearProbing(10);
-
-        Random rd = new Random();
-
-        for(int i = 0; i < 5; i++){
-            tb.insertHash(rd.nextInt(100));
-        }
-
-        tb.displayHashtable();        
+        return true;
     }
 }
