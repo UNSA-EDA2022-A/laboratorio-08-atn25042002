@@ -12,38 +12,38 @@ public class HashLinearProbing {
     }
 
     public void insertHash(Persona p) {
-        if (isFull()) {
+        if (isFull()) { //Si esta lleno el hash
             System.out.println("Tabla hash esta llena!");
             return;
         }
-        if (findPersona(p.DNI)==null){
-            personas[size]= p;
-            size++;
+        if (findPersona(p.DNI)==null){ //Si no encuentra a la persona
+            personas[size]= p;          //La agrega
+            size++;                     //Aumenta el tamaño (nro de elementos validos)
         }
-        else{
+        else{ //En caso el dni ya este registrado
             System.out.println("La persona ya fue registrada");
         }
     }
 
     public void deleteHash(String dni) {
-        if (isEmpty()) {
+        if (isEmpty()) { //Si esta vacio el hash
             System.out.println("Tabla hash esta vacia!");
             return;
         }        
-        if (findPersona(dni)==null){
+        if (findPersona(dni)==null){ //Si el dni no fue registrado
             System.out.println("La persona no esta regitrada");
         }
         else{
             for(int i= 0; i< size; i++){                
-                if(personas[i]== null && i< hsize -1){
-                    personas[i]= personas[i+1];
+                if(personas[i]== null && i< hsize -1){ //Esto sirve para acomodar el hash
+                    personas[i]= personas[i+1];         //luego de remover a alguna persona
                     personas[i+1]= null;
                     continue;
                 }
-                if(personas[i].DNI.equals(dni)){
+                if(personas[i].DNI.equals(dni)){        //Esto remueve a la persona
                     personas[i]= null;
-                    i--;
-                }
+                    i--;                                //Vuelve a recorrer la iteracion
+                }                                       //para acomodar correctamente
             }
             size--;
         }
